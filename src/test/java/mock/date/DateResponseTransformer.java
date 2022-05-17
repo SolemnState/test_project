@@ -1,6 +1,6 @@
 package mock.date;
 
-import api.model.Date;
+import com.innotech.model.Date;
 import com.github.tomakehurst.wiremock.common.FileSource;
 import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.extension.ResponseTransformer;

@@ -1,4 +1,4 @@
-package api.model;
+package com.innotech.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;

@@ -7,11 +7,13 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.specification.RequestSpecification;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 
 import java.time.format.DateTimeFormatter;
 
+@ContextConfiguration(locations = {"classpath:spring-context.xml"})
 public class BaseApiTest extends AbstractTestNGSpringContextTests {
 
     protected DateTimeFormatter apiDateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -29,8 +31,6 @@ public class BaseApiTest extends AbstractTestNGSpringContextTests {
             .setAccept(ContentType.JSON)
             .setContentType(ContentType.JSON)
             .build();
-
-
 
     @BeforeClass
     public void beforeClass() {

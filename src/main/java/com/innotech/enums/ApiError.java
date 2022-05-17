@@ -1,4 +1,4 @@
-package api.enums;
+package com.innotech.enums;
 
 public enum ApiError {
     WRONG_DATE_FORMAT(1, "Date format doesn't match the pattern \"dd.MM.yyyy\""),

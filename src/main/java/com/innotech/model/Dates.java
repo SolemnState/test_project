@@ -1,4 +1,4 @@
-package api.model;
+package com.innotech.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

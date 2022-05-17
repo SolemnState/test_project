@@ -1,7 +1,7 @@
 package api.spring_boot_app;
 
 import api.BaseApiTest;
-import api.endpoints.Endpoints;
+import com.innotech.endpoints.Endpoints;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import mock.date.DateResponseTransformer;

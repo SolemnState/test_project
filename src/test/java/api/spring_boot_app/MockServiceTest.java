@@ -1,8 +1,8 @@
 package api.spring_boot_app;
 
 import api.BaseApiTest;
-import api.endpoints.Endpoints;
-import api.model.Date;
+import com.innotech.endpoints.Endpoints;
+import com.innotech.model.Date;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -31,5 +31,4 @@ public class MockServiceTest extends BaseApiTest {
 
         Assert.assertTrue(expectedDate.equals(actualDate));
     }
-
 }

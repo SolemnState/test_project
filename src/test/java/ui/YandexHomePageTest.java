@@ -16,6 +16,4 @@ public class YandexHomePageTest extends BaseUiTest {
         String searchButtonText = $(By.xpath("//span[@class='button__text']")).getText();
         $(By.xpath("//div[@class='search2__button']//button")).click();
     }
-
-
 }

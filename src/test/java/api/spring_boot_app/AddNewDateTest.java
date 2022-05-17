@@ -1,34 +1,42 @@
 package api.spring_boot_app;
 
 import api.BaseApiTest;
-import api.endpoints.Endpoints;
-import api.enums.ApiError;
-import api.model.ApiException;
-import api.model.Date;
-import api.model.Dates;
+import com.innotech.data.DateDAO;
+import com.innotech.endpoints.Endpoints;
+import com.innotech.enums.ApiError;
+import com.innotech.model.ApiException;
+import com.innotech.model.Date;
+import com.innotech.model.Dates;
 import com.google.common.collect.Iterables;
 import helpers.TestNGHelper;
 import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.sql.SQLException;
+
+import static helpers.DateHelper.generateDate;
 import static io.restassured.RestAssured.given;
 
 public class AddNewDateTest extends BaseApiTest implements TestNGHelper {
+
+    @Autowired
+    DateDAO dateDAO;
 
     @DataProvider(name = "addNewDatePositiveTestDataProvider")
     public Object[][] addNewDatePositiveTestDataProvider() {
         return new Object[][]{
                 {
                     "Add new date",
-                    Date.builder().date("01.01.2020").build()
+                    Date.builder().date(generateDate()).build()
                 }
         };
     }
 
     @Test(dataProvider = "addNewDatePositiveTestDataProvider")
-    public void addNewDatePositiveTest(String name, Date expectedDate) {
+    public void addNewDatePositiveTest(String name, Date expectedDate) throws SQLException {
         Dates datesBefore = given(reqSpec).when()
                 .get(Endpoints.allDates)
                 .then()
@@ -51,11 +59,14 @@ public class AddNewDateTest extends BaseApiTest implements TestNGHelper {
                 .body().as(Dates.class);
         Date actualDate = Iterables.getLast(datesAfter.getDates());
 
+        Date dbDate = dateDAO.getDateByValue(expectedDate.getDate());
+
         Assert.assertEquals(
                 datesAfter.getDates().size(),
                 datesBefore.getDates().size() + 1,
                 "Number of dates in list doesn't match");
         Assert.assertTrue(actualDate.equals(expectedDate), "Expected date doesn't match actual date");
+        Assert.assertTrue(dbDate.equals(expectedDate), "Expected date in DB doesn't match actual date");
     }
 
     @DataProvider(name = "addNewDateNegativeTestDataProvider")
@@ -118,12 +129,11 @@ public class AddNewDateTest extends BaseApiTest implements TestNGHelper {
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .body().as(Dates.class);
-        Date actualDate = Iterables.getLast(datesAfter.getDates());
 
         Assert.assertEquals(
                 datesAfter.getDates().size(),
                 datesBefore.getDates().size(),
-                "Number of dates in list doesn't match");
+                "Количество записей в ответах до и после попытки добавления не совпадает с ожидаемым");
         Assert.assertEquals(
                 exception.getErrorCode(),
                 expectedError.getCode(),

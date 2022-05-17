@@ -1,36 +1,27 @@
 package api.spring_boot_app;
 
 import api.BaseApiTest;
-import api.endpoints.Endpoints;
-import api.model.Date;
-import api.model.Dates;
+import com.innotech.data.DateDAO;
+import com.innotech.endpoints.Endpoints;
+import com.innotech.model.Date;
+import com.innotech.model.Dates;
 import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import java.sql.SQLException;
 
 import static io.restassured.RestAssured.given;
 
 public class GetAllDatesTest extends BaseApiTest {
 
-    private final Dates expectedDates;
-
-    public GetAllDatesTest() {
-        this.expectedDates = Dates.builder()
-                .dates(
-                        List.of(
-                                Date.builder().date("10.12.2020").build(),
-                                Date.builder().date("14.10.2021").build(),
-                                Date.builder().date("10.05.2022").build()
-                        )
-                )
-                .build();
-    }
+    @Autowired
+    DateDAO dateDAO;
 
     @Test(testName = "Get list of all dates")
-    public void getAllDatesTest() {
-
+    public void getAllDatesTest() throws SQLException {
+        Dates expectedDates = dateDAO.getAllDates();
         Dates actualDates = given(reqSpec).when().
                     get(Endpoints.allDates).
                 then().
@@ -38,9 +29,8 @@ public class GetAllDatesTest extends BaseApiTest {
                 extract().
                     body().as(Dates.class);
 
-        Assert.assertTrue(this.expectedDates.equals(actualDates));
+        Assert.assertTrue(expectedDates.equals(actualDates));
         //TODO: hamcrest assert
         //assertThat(actualDates.getDateList(), containsInAnyOrder(this.expectedDates.getDateList().toArray()));
     }
-
 }

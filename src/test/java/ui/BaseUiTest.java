@@ -2,12 +2,15 @@ package ui;
 
 import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BaseUiTest {
+@ContextConfiguration(locations = {"classpath:spring-context.xml"})
+public class BaseUiTest extends AbstractTestNGSpringContextTests {
 
     @BeforeClass
     public void selenoidConfig() {
