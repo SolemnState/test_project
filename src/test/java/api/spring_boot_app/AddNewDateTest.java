@@ -88,19 +88,24 @@ public class AddNewDateTest extends BaseApiTest implements TestNGHelper {
                         ApiError.WRONG_DATE_FORMAT
                 },
                 {
-                        "Add date with null data",
+                        "Add date with null date",
                         Date.builder().date(null).build(),
+                        ApiError.INPUT_DATE_IS_NULL
+                },
+                {
+                        "Add date with empty date",
+                        "{\"date\":\"\"}",
                         ApiError.INPUT_DATE_IS_NULL
                 },
                 {
                         "Add new date with duplicate keys in request body",
                         "{\"date\":\"12.12.2012\",\"date\":\"12.11.2012\"}",
-                        ApiError.INPUT_DATE_IS_NULL //TODO: Добавить исклбчение
+                        ApiError.INPUT_JSON_IS_NOT_VALID
                 },
                 {
                         "Add new date with year value=MAX+1",
                         Date.builder().date("31.12.+1000000000").build(),
-                        ApiError.INPUT_DATE_IS_NULL //TODO: Добавить исклбчение
+                        ApiError.WRONG_DATE_FORMAT
                 }
         };
     }
